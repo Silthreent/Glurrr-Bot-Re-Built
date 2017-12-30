@@ -24,6 +24,25 @@ namespace GlurrrBotReBuilt.Commands
                     var collection = data.GetCollection<RandomeObject>("randome");
                     collection.Insert(new RandomeObject() { Owner = message.Author.Id, Thing = split[1] });
                     Console.WriteLine("Created object: " + split[1] + " under ID:" + message.Author.Id);
+                    await message.Channel.SendMessageAsync("Added " + split[1] + " to your Randome");
+                }
+
+                return;
+            }
+
+            if(lower.Contains("roll"))
+            {
+                using(var data = new LiteDatabase(@"GlurrrBot.db"))
+                {
+                    var list = data.GetCollection<RandomeObject>("randome").Find(Query.All()).ToList();
+                    if(list.Count <= 0)
+                    {
+                        Console.WriteLine("List empty");
+                        return;
+                    }
+
+                    RandomeObject winner = list[new Random().Next(0, list.Count)];
+                    await message.Channel.SendMessageAsync(message.Channel.GetUserAsync(winner.Owner).Result.Username + "'s choice of " + winner.Thing + " wins!");
                 }
 
                 return;
