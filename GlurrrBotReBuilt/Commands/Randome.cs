@@ -51,6 +51,17 @@ namespace GlurrrBotReBuilt.Commands
             if(lower.Contains("list"))
             {
                 await DisplayRandome(message.Channel);
+                return;
+            }
+
+            if(lower.Contains("clear"))
+            {
+                using(var data = new LiteDatabase(@"GlurrrBot.db"))
+                {
+                    data.DropCollection("randome");
+                    Console.WriteLine("Cleared the Randome");
+                    await message.Channel.SendMessageAsync("Cleared the Randome");
+                }
             }
         }
 
