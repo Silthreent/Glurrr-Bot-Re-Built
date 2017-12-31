@@ -11,7 +11,7 @@ namespace GlurrrBotReBuilt
     {
         public const string DATABASE = "GlurrrBot.db";
         public const string CHR_DATABASE = "GlurrrBotChr.db";
-        const string VERSION_NUMBER = "0.0.0";
+        const string VERSION_NUMBER = "0.0.1";
 
         public static DiscordSocketClient client;
 
@@ -56,7 +56,7 @@ namespace GlurrrBotReBuilt
                 }
                 else
                 {
-                    await client.GetGuild(285703929189367811).TextChannels.ElementAt(0).SendMessageAsync(line);
+                    await client.GetGuild(285703929189367811).DefaultChannel.SendMessageAsync(line);
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace GlurrrBotReBuilt
         private async Task GuildAvailable(SocketGuild guild)
         {
             Console.WriteLine("Guild available");
-            await Character.SendMessage("welcome", guild.TextChannels.ElementAt(0));
+            await Character.SendMessage("welcome", guild.DefaultChannel);
         }
 
         private async Task MessageRecieved(SocketMessage message)
