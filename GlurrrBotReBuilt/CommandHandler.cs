@@ -22,10 +22,24 @@ namespace GlurrrBotReBuilt
         {
             string lower = message.Content.ToLower();
 
+            if(message.Author.Id == 134852512611172352)
+            {
+                Console.WriteLine("Master talked");
+                if(lower.Contains("character"))
+                {
+                    Console.WriteLine("Modifying .chr");
+                    if(lower.Contains("edit"))
+                        await Character.AddCharacterLine(message);
+
+                    return;
+                }
+            }
+
             if(lower.Contains("randome"))
             {
                 await Randome.RunCommand(message);
             }
+
             if(lower.Contains("anime"))
             {
                 await message.Channel.SendMessageAsync("I love anime");

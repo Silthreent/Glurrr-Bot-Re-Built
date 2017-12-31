@@ -8,6 +8,8 @@ namespace GlurrrBotReBuilt
 {
     class Program
     {
+        public const string DATABASE = "GlurrrBot.db";
+        public const string CHR_DATABASE = "GlurrrBotChr.db";
         const string VERSION_NUMBER = "0.0.0";
 
         public static DiscordSocketClient client;

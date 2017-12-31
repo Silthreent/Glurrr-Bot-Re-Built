@@ -19,7 +19,7 @@ namespace GlurrrBotReBuilt.Commands
 
             if(lower.Contains("add"))
             {
-                using(var data = new LiteDatabase(@"GlurrrBot.db"))
+                using(var data = new LiteDatabase(Program.DATABASE))
                 {
                     var collection = data.GetCollection<RandomeObject>("randome");
                     collection.Insert(new RandomeObject() { Owner = message.Author.Id, Thing = split[1] });
@@ -32,7 +32,7 @@ namespace GlurrrBotReBuilt.Commands
 
             if(lower.Contains("roll"))
             {
-                using(var data = new LiteDatabase(@"GlurrrBot.db"))
+                using(var data = new LiteDatabase(Program.DATABASE))
                 {
                     var list = data.GetCollection<RandomeObject>("randome").Find(Query.All()).ToList();
                     if(list.Count <= 0)
@@ -56,7 +56,7 @@ namespace GlurrrBotReBuilt.Commands
 
             if(lower.Contains("clear"))
             {
-                using(var data = new LiteDatabase(@"GlurrrBot.db"))
+                using(var data = new LiteDatabase(Program.DATABASE))
                 {
                     data.DropCollection("randome");
                     Console.WriteLine("Cleared the Randome");
@@ -67,7 +67,7 @@ namespace GlurrrBotReBuilt.Commands
 
         async static Task DisplayRandome(ISocketMessageChannel channel)
         {
-            using(var data = new LiteDatabase(@"Glurrrbot.db"))
+            using(var data = new LiteDatabase(Program.DATABASE))
             {
                 var results = data.GetCollection<RandomeObject>("randome").Find(Query.All()).ToList();
                 if(results.Count() <= 0)
