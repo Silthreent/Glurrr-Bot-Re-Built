@@ -10,15 +10,33 @@ namespace GlurrrBotReBuilt
 {
     class Character
     {
-        static string currentCharacter;
+        static string currentCharacter = "monika";
 
         public static async Task SendMessage(string message, ISocketMessageChannel channel, string format1 = "", string format2 = "")
         {
             using(var db = new LiteDatabase(Program.CHR_DATABASE))
             {
-                var character = db.GetCollection<CharacterString>(currentCharacter + ".chr");
+                var character = db.GetCollection<CharacterString>(currentCharacter);
 
                 await channel.SendMessageAsync(character.FindOne(x => x.Tag == message).Line);
+            }
+        }
+
+        public static async Task SetCharacter(string character, ISocketMessageChannel channel)
+        {
+            using(var data = new LiteDatabase(Program.CHR_DATABASE))
+            {
+                if(data.CollectionExists(character))
+                {
+                    await SendMessage("changedchr", channel, currentCharacter);
+                    currentCharacter = character;
+                    Console.WriteLine("Character changed to " + character);
+                }
+                else
+                {
+                    await SendMessage("changechrfail", channel);
+                    Console.WriteLine("Couldn't find specified .chr");
+                }
             }
         }
 
@@ -51,7 +69,6 @@ namespace GlurrrBotReBuilt
                         Console.WriteLine("Added " + split[5] + " under tag " + split[3] + " to the character " + split[1]);
                         await message.Channel.SendMessageAsync("Added " + split[5] + " under tag " + split[3] + " to the character " + split[1]);
                     }
-
                 }
             }
         }

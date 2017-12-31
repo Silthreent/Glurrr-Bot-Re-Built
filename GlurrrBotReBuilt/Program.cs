@@ -3,6 +3,7 @@ using Discord.WebSocket;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace GlurrrBotReBuilt
 {
@@ -23,6 +24,7 @@ namespace GlurrrBotReBuilt
             client = new DiscordSocketClient();
             client.Log += Log;
             client.MessageReceived += MessageRecieved;
+            client.GuildAvailable += GuildAvailable;
 
             try
             {
@@ -60,6 +62,12 @@ namespace GlurrrBotReBuilt
             Console.WriteLine(msg.ToString());
 
             return Task.CompletedTask;
+        }
+
+        private async Task GuildAvailable(SocketGuild guild)
+        {
+            Console.WriteLine("Guild available");
+            await Character.SendMessage("welcome", guild.TextChannels.ElementAt(0));
         }
 
         private async Task MessageRecieved(SocketMessage message)
