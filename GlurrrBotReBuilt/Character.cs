@@ -18,7 +18,22 @@ namespace GlurrrBotReBuilt
             {
                 var character = db.GetCollection<CharacterString>(currentCharacter);
 
-                await channel.SendMessageAsync(character.FindOne(x => x.Tag == message).Line);
+                if(character.Exists(x => x.Tag == message))
+                {
+                    await channel.SendMessageAsync(character.FindOne(x => x.Tag == message).Line);
+                }
+                else
+                {
+                    var defaultChr = db.GetCollection<CharacterString>("default");
+                    if(defaultChr.Exists(x => x.Tag == message))
+                    {
+                        await channel.SendMessageAsync(defaultChr.FindOne(x => x.Tag == message).Line);
+                    }
+                    else
+                    {
+                        await channel.SendMessageAsync("Empty response: " + message);
+                    }
+                }
             }
         }
 
