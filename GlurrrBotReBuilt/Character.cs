@@ -59,15 +59,15 @@ namespace GlurrrBotReBuilt
                         chr.Tag = split[3];
                         chr.Line = split[5];
 
-                        Console.WriteLine("Edited " + split[3] + " to be " + split[5] + " with the character " + split[1]);
-                        await message.Channel.SendMessageAsync("Edited " + split[3] + " to be " + split[5] + " with the character " + split[1]);
+                        Console.WriteLine("Edited :" + split[3] + ": to be :" + split[5] + ": with the character :" + split[1] + ":");
+                        await message.Channel.SendMessageAsync("Edited :" + split[3] + ": to be :" + split[5] + ": with the character :" + split[1] + ":");
                     }
                     else
                     {
                         collection.Insert(new CharacterString() { Tag = split[3], Line = split[5] });
 
-                        Console.WriteLine("Added " + split[5] + " under tag " + split[3] + " to the character " + split[1]);
-                        await message.Channel.SendMessageAsync("Added " + split[5] + " under tag " + split[3] + " to the character " + split[1]);
+                        Console.WriteLine("Added :" + split[5] + ": under tag :" + split[3] + ": to the character :" + split[1] + ":");
+                        await message.Channel.SendMessageAsync("Added :" + split[5] + ": under tag :" + split[3] + ": to the character :" + split[1] + ":");
                     }
                 }
             }

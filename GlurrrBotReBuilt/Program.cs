@@ -54,6 +54,10 @@ namespace GlurrrBotReBuilt
                 {
                     break;
                 }
+                else
+                {
+                    await client.GetGuild(285703929189367811).TextChannels.ElementAt(0).SendMessageAsync(line);
+                }
             }
         }
 
