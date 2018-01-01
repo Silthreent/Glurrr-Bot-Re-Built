@@ -11,20 +11,27 @@ namespace GlurrrBotReBuilt.Commands
 {
     class Randome
     {
+        static string loadedList = "randome_default";
+
         public static async Task RunCommand(SocketMessage message)
         {
             Console.WriteLine("Running Randome");
             string lower = message.Content.ToLower();
-            string[] split = lower.Split('"');
 
             if(lower.Contains("add"))
             {
+                string[] split = lower.Split('"');
+                if(split.Length < 3)
+                {
+                    await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                }
+
                 using(var data = new LiteDatabase(Program.DATABASE))
                 {
-                    var collection = data.GetCollection<RandomeObject>("randome");
+                    var collection = data.GetCollection<RandomeObject>(loadedList);
                     collection.Insert(new RandomeObject() { Owner = message.Author.Id, Thing = split[1] });
-                    Console.WriteLine("Created object: " + split[1] + " under ID:" + message.Author.Id);
-                    await message.Channel.SendMessageAsync("Added " + split[1] + " to your Randome");
+                    Console.WriteLine("Created object: " + split[1] + " under ID:" + message.Author.Id + " on list: " + loadedList);
+                    await message.Channel.SendMessageAsync("Added " + split[1] + " to your Randome " + loadedList);
                 }
 
                 return;
@@ -34,7 +41,7 @@ namespace GlurrrBotReBuilt.Commands
             {
                 using(var data = new LiteDatabase(Program.DATABASE))
                 {
-                    var list = data.GetCollection<RandomeObject>("randome").Find(Query.All()).ToList();
+                    var list = data.GetCollection<RandomeObject>(loadedList).Find(Query.All()).ToList();
                     if(list.Count <= 0)
                     {
                         Console.WriteLine("List empty");
@@ -47,6 +54,11 @@ namespace GlurrrBotReBuilt.Commands
 
                 return;
             }
+
+            if(lower.Contains("load"))
+            {
+
+            }
             
             if(lower.Contains("list"))
             {
@@ -58,7 +70,7 @@ namespace GlurrrBotReBuilt.Commands
             {
                 using(var data = new LiteDatabase(Program.DATABASE))
                 {
-                    data.DropCollection("randome");
+                    data.DropCollection(loadedList);
                     Console.WriteLine("Cleared the Randome");
                     await message.Channel.SendMessageAsync("Cleared the Randome");
                 }
@@ -69,7 +81,7 @@ namespace GlurrrBotReBuilt.Commands
         {
             using(var data = new LiteDatabase(Program.DATABASE))
             {
-                var results = data.GetCollection<RandomeObject>("randome").Find(Query.All()).ToList();
+                var results = data.GetCollection<RandomeObject>(loadedList).Find(Query.All()).ToList();
                 if(results.Count() <= 0)
                 {
                     Console.WriteLine("Empty list");

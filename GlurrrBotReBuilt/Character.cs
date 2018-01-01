@@ -12,22 +12,24 @@ namespace GlurrrBotReBuilt
     {
         static string currentCharacter = "monika";
 
-        public static async Task SendMessage(string message, ISocketMessageChannel channel, string format1 = "", string format2 = "")
+        public static async Task SendMessage(string message, string consoleMessage, ISocketMessageChannel channel, string format1 = "", string format2 = "")
         {
+            Console.WriteLine(string.Format(consoleMessage, format1, format2));
+
             using(var db = new LiteDatabase(Program.CHR_DATABASE))
             {
                 var character = db.GetCollection<CharacterString>(currentCharacter);
 
                 if(character.Exists(x => x.Tag == message))
                 {
-                    await channel.SendMessageAsync(character.FindOne(x => x.Tag == message).Line);
+                    await channel.SendMessageAsync(string.Format(character.FindOne(x => x.Tag == message).Line, format1, format2));
                 }
                 else
                 {
                     var defaultChr = db.GetCollection<CharacterString>("default");
                     if(defaultChr.Exists(x => x.Tag == message))
                     {
-                        await channel.SendMessageAsync(defaultChr.FindOne(x => x.Tag == message).Line);
+                        await channel.SendMessageAsync(string.Format(defaultChr.FindOne(x => x.Tag == message).Line, format1, format2));
                     }
                     else
                     {
@@ -43,14 +45,12 @@ namespace GlurrrBotReBuilt
             {
                 if(data.CollectionExists(character))
                 {
-                    await SendMessage("changedchr", channel, currentCharacter);
+                    await SendMessage("changedchr", "Changed chr from {0} to {1}", channel, currentCharacter, character);
                     currentCharacter = character;
-                    Console.WriteLine("Character changed to " + character);
                 }
                 else
                 {
-                    await SendMessage("changechrfail", channel);
-                    Console.WriteLine("Couldn't find specified .chr");
+                    await SendMessage("changechrfail", "Character {0} not found", channel, character);
                 }
             }
         }
@@ -61,9 +61,6 @@ namespace GlurrrBotReBuilt
 
             if(split.Length >= 6)
             {
-                Console.WriteLine("Quotes found");
-                Console.WriteLine(split[1] + " | " + split[3] + " | " + split[5]);
-
                 using(var data = new LiteDatabase(Program.CHR_DATABASE))
                 {
                     var collection = data.GetCollection<CharacterString>(split[1]);

@@ -71,7 +71,7 @@ namespace GlurrrBotReBuilt
         private async Task GuildAvailable(SocketGuild guild)
         {
             Console.WriteLine("Guild available");
-            await Character.SendMessage("welcome", guild.DefaultChannel);
+            await Character.SendMessage("welcome", "Bot loaded", guild.DefaultChannel);
         }
 
         private async Task MessageRecieved(SocketMessage message)
