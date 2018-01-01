@@ -24,6 +24,7 @@ namespace GlurrrBotReBuilt.Commands
                 if(split.Length < 3)
                 {
                     await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                    return;
                 }
 
                 using(var data = new LiteDatabase(Program.DATABASE))
@@ -31,7 +32,7 @@ namespace GlurrrBotReBuilt.Commands
                     var collection = data.GetCollection<RandomeObject>(loadedList);
                     collection.Insert(new RandomeObject() { Owner = message.Author.Id, Thing = split[1] });
                     Console.WriteLine("Created object: " + split[1] + " under ID:" + message.Author.Id + " on list: " + loadedList);
-                    await message.Channel.SendMessageAsync("Added " + split[1] + " to your Randome " + loadedList);
+                    await message.Channel.SendMessageAsync("Added " + split[1] + " to your Randome " + loadedList.Substring(8));
                 }
 
                 return;
@@ -57,7 +58,15 @@ namespace GlurrrBotReBuilt.Commands
 
             if(lower.Contains("load"))
             {
+                string[] split = lower.Split('"');
+                if(split.Length < 3)
+                {
+                    await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                    return;
+                }
 
+                loadedList = "randome_" + split[1];
+                await Character.SendMessage("loadedrandome", "Loaded Randome {0}", message.Channel, split[1]);
             }
             
             if(lower.Contains("list"))

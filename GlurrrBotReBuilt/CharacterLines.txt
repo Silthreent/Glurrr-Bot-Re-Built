@@ -1,3 +1,5 @@
 welcome
 changedchr
 changechrfailed
+loadedrandome
+noquotes
