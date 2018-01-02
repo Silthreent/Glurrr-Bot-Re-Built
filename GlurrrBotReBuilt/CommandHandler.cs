@@ -10,16 +10,8 @@ namespace GlurrrBotReBuilt
 {
     class CommandHandler
     {
-        static bool wishedNewYear = false;
-
         public static async Task MessageRecieved(SocketMessage message)
         {
-            if(!wishedNewYear && DateTime.Today.Year == 2018)
-            {
-                await message.Channel.SendMessageAsync("Happy New Year! I hope 2018 is filled with more poems with my friends!");
-                wishedNewYear = true;
-            }
-
             if(message.Content.ToLower().Contains("monika"))
             {
                 await ParseMessage(message);
@@ -41,6 +33,11 @@ namespace GlurrrBotReBuilt
 
                     return;
                 }
+            }
+
+            if(lower.Contains("kys"))
+            {
+                await KeepYourselfSafe.RunCommand(message);
             }
 
             if(lower.Contains("channel list"))
