@@ -15,6 +15,8 @@ namespace GlurrrBotReBuilt
 
         public static DiscordSocketClient client;
 
+        DateTime lastWelcome;
+
         static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult();
 
         public async Task MainAsync()
@@ -71,7 +73,18 @@ namespace GlurrrBotReBuilt
         private async Task GuildAvailable(SocketGuild guild)
         {
             Console.WriteLine("Guild available");
-            await Character.SendMessage("welcome", "Bot loaded", guild.DefaultChannel);
+            Console.WriteLine(lastWelcome.CompareTo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + 1)));
+            if(lastWelcome.Year == 0001)
+            {
+                await Character.SendMessage("welcome", "Bot loaded", guild.DefaultChannel);
+                lastWelcome = DateTime.Now;
+            }
+
+            if(lastWelcome.CompareTo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + 1)) > 0)
+            {
+                await Character.SendMessage("welcome", "Bot loaded", guild.DefaultChannel);
+                lastWelcome = DateTime.Now;
+            }
         }
 
         private async Task MessageRecieved(SocketMessage message)
