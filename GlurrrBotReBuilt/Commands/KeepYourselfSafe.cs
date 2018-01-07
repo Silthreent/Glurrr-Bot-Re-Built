@@ -60,6 +60,20 @@ namespace GlurrrBotReBuilt.Commands
                     }
                 }
             }
+            if(lower.Contains("mike"))
+            {
+                var msgs = await message.Channel.GetMessagesAsync().Flatten();
+                foreach(RestUserMessage msg in msgs)
+                {
+                    if(msg.Author.Id == 285917896553660416)
+                    {
+                        await msg.AddReactionAsync(new Emoji("🇰"));
+                        await msg.AddReactionAsync(new Emoji("🇾"));
+                        await msg.AddReactionAsync(new Emoji("🇸"));
+                        break;
+                    }
+                }
+            }
             if(lower.Contains("matt"))
             {
                 var msgs = await message.Channel.GetMessagesAsync().Flatten();
