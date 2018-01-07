@@ -3,3 +3,6 @@ changedchr
 changechrfailed
 loadedrandome
 noquotes
+deletefromown
+nodelete
+deletefromrandomes

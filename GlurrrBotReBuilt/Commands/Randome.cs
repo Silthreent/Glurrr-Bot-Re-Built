@@ -38,6 +38,42 @@ namespace GlurrrBotReBuilt.Commands
                 return;
             }
 
+            if(lower.Contains("delete"))
+            {
+                string[] split = lower.Split('"');
+                if(split.Length < 3)
+                {
+                    await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                    return;
+                }
+
+                using(var data = new LiteDatabase(Program.DATABASE))
+                {
+                    if(lower.Contains("from my"))
+                    {
+                        if(data.GetCollection<RandomeObject>(loadedList).Delete(x => x.Owner == message.Author.Id && x.Thing == split[1]) > 0)
+                        {
+                            await Character.SendMessage("deletefromown", "Deleted {0} from own Randome", message.Channel, split[1]);
+                        }
+                        else
+                        {
+                            await Character.SendMessage("nodelete", "No instances of {0} found in own Randome", message.Channel, split[1]);
+                        }
+                    }
+                    else
+                    {
+                        if(data.GetCollection<RandomeObject>(loadedList).Delete(x => x.Thing == split[1]) > 0)
+                        {
+                            await Character.SendMessage("deletefromrandomes", "Deleted {0} from Randomes", message.Channel, split[1]);
+                        }
+                        else
+                        {
+                            await Character.SendMessage("nodelete", "No instances of {0} found in Randomes", message.Channel, split[1]);
+                        }
+                    }
+                }
+            }
+
             if(lower.Contains("roll"))
             {
                 using(var data = new LiteDatabase(Program.DATABASE))
