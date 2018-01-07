@@ -116,8 +116,7 @@ namespace GlurrrBotReBuilt.Commands
                 using(var data = new LiteDatabase(Program.DATABASE))
                 {
                     data.DropCollection(loadedList);
-                    Console.WriteLine("Cleared the Randome");
-                    await message.Channel.SendMessageAsync("Cleared the Randome");
+                    await Character.SendMessage("clearedrandome", "Cleared the Randome", message.Channel);
                 }
             }
         }

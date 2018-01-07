@@ -73,7 +73,6 @@ namespace GlurrrBotReBuilt
         private async Task GuildAvailable(SocketGuild guild)
         {
             Console.WriteLine("Guild available");
-            Console.WriteLine(lastWelcome.CompareTo(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day + 1)));
             if(lastWelcome.Year == 0001)
             {
                 await Character.SendMessage("welcome", "Bot loaded", guild.DefaultChannel);

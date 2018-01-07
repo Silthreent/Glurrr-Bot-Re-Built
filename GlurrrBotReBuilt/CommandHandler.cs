@@ -1,8 +1,10 @@
 ﻿using Discord;
 using Discord.WebSocket;
 using GlurrrBotReBuilt.Commands;
+using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -31,6 +33,29 @@ namespace GlurrrBotReBuilt
                     if(lower.Contains("edit"))
                         await Character.AddCharacterLine(message);
 
+                    if(lower.Contains("list"))
+                    {
+                        string[] split = lower.Split('"');
+                        if(split.Length < 3)
+                        {
+                            await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                            return;
+                        }
+
+                        using(var data = new LiteDatabase(Program.CHR_DATABASE))
+                        {
+                            var results = data.GetCollection<CharacterString>(split[1]).Find(Query.All()).ToList();
+
+                            string builder = "";
+                            foreach(CharacterString chr in results)
+                            {
+                                builder += chr.Tag + " | " + chr.Line + "\n";
+                            }
+
+                            Console.WriteLine(builder);
+                            await message.Channel.SendMessageAsync(builder);
+                        }
+                    }
                     return;
                 }
             }
