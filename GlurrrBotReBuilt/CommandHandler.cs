@@ -20,7 +20,7 @@ namespace GlurrrBotReBuilt
             }
             else
             {
-                if(message.Content.ToLower() == message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1).Content)
+                if(message.Content.ToLower() == message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1).Content.ToLower())
                 {
                     await message.Channel.SendMessageAsync(message.Content);
                 }
