@@ -11,6 +11,7 @@ namespace GlurrrBotReBuilt
     {
         public const string DATABASE = "GlurrrBot.db";
         public const string CHR_DATABASE = "GlurrrBotChr.db";
+        public const string SPEECH_DATABASE = "MonikaAI.db";
         const string VERSION_NUMBER = "0.0.1";
 
         public static DiscordSocketClient client;

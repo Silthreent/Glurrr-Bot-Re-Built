@@ -18,6 +18,13 @@ namespace GlurrrBotReBuilt
             {
                 await ParseMessage(message);
             }
+            else
+            {
+                if(message.Content.ToLower() == message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1).Content)
+                {
+                    await message.Channel.SendMessageAsync(message.Content);
+                }
+            }
         }
 
         static async Task ParseMessage(SocketMessage message)
