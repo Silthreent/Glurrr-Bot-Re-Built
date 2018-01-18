@@ -70,6 +70,7 @@ namespace GlurrrBotReBuilt
                         var chr = collection.FindOne(x => x.Tag == split[3]);
                         chr.Tag = split[3];
                         chr.Line = split[5];
+                        collection.Update(chr);
 
                         Console.WriteLine("Edited :" + split[3] + ": to be :" + split[5] + ": with the character :" + split[1] + ":");
                         await message.Channel.SendMessageAsync("Edited :" + split[3] + ": to be :" + split[5] + ": with the character :" + split[1] + ":");
