@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Discord.Audio;
 using GlurrrBotReBuilt.Commands;
 using LiteDB;
 using System;
@@ -95,6 +96,11 @@ namespace GlurrrBotReBuilt
             if(lower.Contains("anime"))
             {
                 await message.Channel.SendMessageAsync("I love anime");
+            }
+
+            if(lower.Contains("voice"))
+            {
+                await InsideVoice.RunCommand(message);
             }
         }
     }

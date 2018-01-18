@@ -1,5 +1,6 @@
 ﻿using Discord;
 using Discord.WebSocket;
+using Discord.Audio;
 using System;
 using System.IO;
 using System.Threading.Tasks;
