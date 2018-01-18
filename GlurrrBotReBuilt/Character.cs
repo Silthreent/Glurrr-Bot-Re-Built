@@ -22,7 +22,8 @@ namespace GlurrrBotReBuilt
 
                 if(character.Exists(x => x.Tag == message))
                 {
-                    await channel.SendMessageAsync(string.Format(character.FindOne(x => x.Tag == message).Line, format1, format2));
+                    var options = character.Find(x => x.Tag == message);
+                    await channel.SendMessageAsync(string.Format(options.ElementAt(new Random().Next(0, options.Count())).Line, format1, format2));
                 }
                 else
                 {
@@ -55,7 +56,7 @@ namespace GlurrrBotReBuilt
             }
         }
 
-        public static async Task AddCharacterLine(SocketMessage message)
+        public static async Task AddCharacterLine(SocketMessage message, bool overwrite = false)
         {
             string[] split = message.Content.Split('"');
 
@@ -65,7 +66,7 @@ namespace GlurrrBotReBuilt
                 {
                     var collection = data.GetCollection<CharacterString>(split[1]);
 
-                    if(collection.Exists(x => x.Tag == split[3]))
+                    if(collection.Exists(x => x.Tag == split[3]) && overwrite == false)
                     {
                         var chr = collection.FindOne(x => x.Tag == split[3]);
                         chr.Tag = split[3];

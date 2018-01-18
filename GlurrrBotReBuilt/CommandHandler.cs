@@ -67,6 +67,11 @@ namespace GlurrrBotReBuilt
                 }
             }
 
+            if(lower.Contains("thanks") || lower.Contains("thank"))
+            {
+                await Character.SendMessage("thanks", "Got thanks", message.Channel);
+            }
+
             if(lower.Contains("kys"))
             {
                 await KeepYourselfSafe.RunCommand(message);
