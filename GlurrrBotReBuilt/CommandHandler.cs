@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace GlurrrBotReBuilt
 {
@@ -101,6 +102,29 @@ namespace GlurrrBotReBuilt
             if(lower.Contains("voice"))
             {
                 await InsideVoice.RunCommand(message);
+            }
+
+            if(lower.Contains("play"))
+            {
+                if(lower.Contains("your song") || lower.Contains("your reality"))
+                {
+                    await Character.SendMessage("yourreality", "Playing my song~", message.Channel);
+                    await InsideVoice.PlaySong("YourReality.mp3", message);
+                    return;
+                }
+
+                string[] split = lower.Split('"');
+                if(split.Length < 3)
+                {
+                    await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                    return;
+                }
+
+                if(File.Exists(split[1] + ".mp3"))
+                {
+                    await Character.SendMessage("playsong", "Playing a song", message.Channel, split[1]);
+                    await InsideVoice.PlaySong(split[1] + ".mp3", message);
+                }
             }
         }
     }
