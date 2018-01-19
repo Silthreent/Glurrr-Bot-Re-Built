@@ -16,13 +16,15 @@ namespace GlurrrBotReBuilt
     {
         public static async Task MessageRecieved(SocketMessage message)
         {
+            string lastMessageHolder = message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1).Content.ToLower();
+
             if(message.Content.ToLower().Contains("monika"))
             {
                 await ParseMessage(message);
             }
             else
             {
-                if(message.Content.ToLower() == message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1).Content.ToLower())
+                if(message.Content.ToLower() == lastMessageHolder)
                 {
                     await message.Channel.SendMessageAsync(message.Content);
                 }
