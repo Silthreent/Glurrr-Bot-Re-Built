@@ -23,18 +23,19 @@ namespace GlurrrBotReBuilt
                 if(character.Exists(x => x.Tag == message))
                 {
                     var options = character.Find(x => x.Tag == message);
-                    await channel.SendMessageAsync(string.Format(options.ElementAt(new Random().Next(0, options.Count())).Line, format1, format2));
+                    var selectedOption = new Random().Next(0, options.Count());
+                    await WriteChat(string.Format(options.ElementAt(selectedOption).Line, format1, format2), channel);
                 }
                 else
                 {
                     var defaultChr = db.GetCollection<CharacterString>("default");
                     if(defaultChr.Exists(x => x.Tag == message))
                     {
-                        await channel.SendMessageAsync(string.Format(defaultChr.FindOne(x => x.Tag == message).Line, format1, format2));
+                        await WriteChat(string.Format(defaultChr.FindOne(x => x.Tag == message).Line, format1, format2), channel);
                     }
                     else
                     {
-                        await channel.SendMessageAsync("Empty response: " + message);
+                        await WriteChat("Empty response: " + message, channel);
                     }
                 }
             }
@@ -74,17 +75,25 @@ namespace GlurrrBotReBuilt
                         collection.Update(chr);
 
                         Console.WriteLine("Edited :" + split[3] + ": to be :" + split[5] + ": with the character :" + split[1] + ":");
-                        await message.Channel.SendMessageAsync("Edited :" + split[3] + ": to be :" + split[5] + ": with the character :" + split[1] + ":");
+                        await WriteChat("Edited :" + split[3] + ": to be :" + split[5] + ": with the character :" + split[1] + ":", message.Channel);
                     }
                     else
                     {
                         collection.Insert(new CharacterString() { Tag = split[3], Line = split[5] });
 
                         Console.WriteLine("Added :" + split[5] + ": under tag :" + split[3] + ": to the character :" + split[1] + ":");
-                        await message.Channel.SendMessageAsync("Added :" + split[5] + ": under tag :" + split[3] + ": to the character :" + split[1] + ":");
+                        await WriteChat("Added :" + split[5] + ": under tag :" + split[3] + ": to the character :" + split[1] + ":", message.Channel);
                     }
                 }
             }
+        }
+
+        public static async Task WriteChat(string message, ISocketMessageChannel channel)
+        {
+            var typing = channel.EnterTypingState();
+            await Task.Delay(message.Length * 75);
+            await channel.SendMessageAsync(message);
+            typing.Dispose();
         }
     }
 

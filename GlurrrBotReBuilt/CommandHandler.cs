@@ -26,7 +26,7 @@ namespace GlurrrBotReBuilt
             {
                 if(message.Content.ToLower() == lastMessageHolder)
                 {
-                    await message.Channel.SendMessageAsync(message.Content);
+                    await Character.WriteChat(message.Content, message.Channel);
                 }
             }
         }
@@ -64,7 +64,7 @@ namespace GlurrrBotReBuilt
                             }
 
                             Console.WriteLine(builder);
-                            await message.Channel.SendMessageAsync(builder);
+                            await Character.WriteChat(builder, message.Channel);
                         }
                     }
                     return;
@@ -98,7 +98,7 @@ namespace GlurrrBotReBuilt
 
             if(lower.Contains("anime"))
             {
-                await message.Channel.SendMessageAsync("I love anime");
+                await Character.SendMessage("anime", "", message.Channel);
             }
 
             if(lower.Contains("voice"))

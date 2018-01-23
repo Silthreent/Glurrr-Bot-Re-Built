@@ -32,7 +32,7 @@ namespace GlurrrBotReBuilt.Commands
                     var collection = data.GetCollection<RandomeObject>(loadedList);
                     collection.Insert(new RandomeObject() { Owner = message.Author.Id, Thing = split[1] });
                     Console.WriteLine("Created object: " + split[1] + " under ID:" + message.Author.Id + " on list: " + loadedList);
-                    await message.Channel.SendMessageAsync("Added " + split[1] + " to your Randome " + loadedList.Substring(8));
+                    await Character.WriteChat("Added " + split[1] + " to your Randome " + loadedList.Substring(8), message.Channel);
                 }
 
                 return;
@@ -86,7 +86,7 @@ namespace GlurrrBotReBuilt.Commands
                     }
 
                     RandomeObject winner = list[new Random().Next(0, list.Count)];
-                    await message.Channel.SendMessageAsync(message.Channel.GetUserAsync(winner.Owner).Result.Username + "'s choice of " + winner.Thing + " wins!");
+                    await Character.WriteChat(message.Channel.GetUserAsync(winner.Owner).Result.Username + "'s choice of " + winner.Thing + " wins!", message.Channel);
                 }
 
                 return;
