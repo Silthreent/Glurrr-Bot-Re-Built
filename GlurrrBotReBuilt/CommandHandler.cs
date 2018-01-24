@@ -55,6 +55,12 @@ namespace GlurrrBotReBuilt
 
                         using(var data = new LiteDatabase(Program.CHR_DATABASE))
                         {
+                            if(!data.CollectionExists(split[1]))
+                            {
+                                await Character.SendMessage("cantfind", "Can't find that character", message.Channel, split[1]);
+                                return;
+                            }
+
                             var results = data.GetCollection<CharacterString>(split[1]).Find(Query.All()).ToList();
 
                             string builder = "";
