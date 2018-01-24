@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace GlurrrBotReBuilt
 {
@@ -34,6 +35,16 @@ namespace GlurrrBotReBuilt
         static async Task ParseMessage(SocketMessage message)
         {
             string lower = message.Content.ToLower();
+
+            if(lower.Contains("roll"))
+            {
+                if(Regex.Match(lower, @"d\d+").Success)
+                {
+                    string number = Regex.Match(lower, @"\d+").Value;
+                    await Character.WriteChat("I rolled a " + new Random().Next(1, int.Parse(number)) + "!", message.Channel);
+                }
+            }
+            
 
             if(message.Author.Id == 134852512611172352)
             {
