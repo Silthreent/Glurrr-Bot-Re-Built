@@ -25,9 +25,13 @@ namespace GlurrrBotReBuilt
             }
             else
             {
-                if(message.Content.ToLower() == lastMessageHolder)
+                var lastMessage = message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1);
+                if(message.Content.ToLower() == lastMessage.Content.ToLower())
                 {
-                    await Character.WriteChat(message.Content, message.Channel);
+                    if(message.Id != lastMessage.Id)
+                    {
+                        await Character.WriteChat(message.Content, message.Channel);
+                    }
                 }
             }
         }
@@ -45,7 +49,6 @@ namespace GlurrrBotReBuilt
                 }
             }
             
-
             if(message.Author.Id == 134852512611172352)
             {
                 Console.WriteLine("Master talked");
