@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
+using GlurrrBotReBuilt.Commands;
 
 namespace GlurrrBotReBuilt
 {
@@ -56,6 +57,11 @@ namespace GlurrrBotReBuilt
                 if(line == "kys")
                 {
                     break;
+                }
+                else if(line == "poem")
+                {
+                    Console.WriteLine("Poem Writing Mode");
+                    PoemTime.NewPoem();
                 }
                 else
                 {

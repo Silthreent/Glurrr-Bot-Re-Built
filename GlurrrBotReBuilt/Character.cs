@@ -90,10 +90,11 @@ namespace GlurrrBotReBuilt
 
         public static async Task WriteChat(string message, ISocketMessageChannel channel)
         {
-            var typing = channel.EnterTypingState();
-            await Task.Delay(message.Length * 65);
-            await channel.SendMessageAsync(message);
-            typing.Dispose();
+            using(var typing = channel.EnterTypingState())
+            {
+                await Task.Delay(message.Length * 65);
+                await channel.SendMessageAsync(message);
+            }
         }
     }
 

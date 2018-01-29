@@ -148,6 +148,14 @@ namespace GlurrrBotReBuilt
                     await InsideVoice.PlaySong(split[1] + ".mp3", message);
                 }
             }
+
+            if(lower.Contains("poem"))
+            {
+                if(lower.Contains("read"))
+                {
+                    await PoemTime.ReadPoem(message);
+                }
+            }
         }
     }
 }
