@@ -23,6 +23,10 @@ namespace GlurrrBotReBuilt
             {
                 await ParseMessage(message);
             }
+            else if(FixedCommands(message).Result)
+            {
+                return;
+            }
             else
             {
                 var lastMessage = message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1);
@@ -45,7 +49,7 @@ namespace GlurrrBotReBuilt
                 if(Regex.Match(lower, @"d\d+").Success)
                 {
                     string number = Regex.Match(lower, @"\d+").Value;
-                    await Character.WriteChat("I rolled a " + new Random().Next(1, int.Parse(number)) + "!", message.Channel);
+                    await Character.WriteChat("I rolled a " + new Random().Next(1, int.Parse(number) + 1) + "!", message.Channel);
                 }
             }
             
@@ -156,6 +160,37 @@ namespace GlurrrBotReBuilt
                     await PoemTime.ReadPoem(message);
                 }
             }
+
+            if(lower.Contains("user info"))
+            {
+                await message.Channel.SendMessageAsync("```Joined at: " + (message.Author as SocketGuildUser).JoinedAt + "\nAccount created at: " + message.Author.CreatedAt + "```");
+            }
+
+            if(lower.Contains("change game"))
+            {
+                string[] split = message.Content.Split('"');
+
+                await Program.client.SetGameAsync(split[1]);
+            }
+        }
+
+        static async Task<bool> FixedCommands(SocketMessage message)
+        {
+            if(message.Content.ToLower() == "/leave")
+            {
+                var embed = new EmbedBuilder()
+                {
+                    Title = (message.Author as SocketGuildUser).Nickname + " has left",
+                    Description = (message.Author as SocketGuildUser).Nickname + " has left the Discord and would like everyone to know they did. They are very triggered.",
+                    Color = Color.DarkRed,
+                    ImageUrl = "https://cdn.discordapp.com/attachments/359555790597783553/409532133346902016/sagiribakasmall.png",
+                };
+
+                await message.Channel.SendMessageAsync("", embed: embed);
+                return true;
+            }
+
+            return false;
         }
     }
 }

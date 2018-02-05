@@ -63,6 +63,15 @@ namespace GlurrrBotReBuilt
                     Console.WriteLine("Poem Writing Mode");
                     PoemTime.NewPoem();
                 }
+                else if(line == "game")
+                {
+                    Console.Write("Changing Game: ");
+                    line = Console.ReadLine();
+
+                    await client.SetGameAsync(line);
+
+                    Console.WriteLine("Game changed to " + line);
+                }
                 else
                 {
                     Task.Run(() => Character.WriteChat(line, client.GetGuild(285703929189367811).DefaultChannel));
