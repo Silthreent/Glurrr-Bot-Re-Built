@@ -33,7 +33,7 @@ namespace GlurrrBotReBuilt
         private object CreateProxy()
         {
             dynamic proxy = new ExpandoObject();
-            proxy.SendMessage = new Action<string, ISocketMessageChannel>(Character.Chatter);
+            proxy.WriteChat = new Action<string, ISocketMessageChannel>(PythonMethods.WriteChat);
             return proxy;
         }
     }

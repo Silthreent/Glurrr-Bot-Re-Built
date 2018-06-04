@@ -1,1 +1,2 @@
-proxy.SendMessage("Sent from Python", message.Channel)
+proxy.WriteChat("Sent from Python", message.Channel)
+message.Channel.SendMessageAsync("Text")
