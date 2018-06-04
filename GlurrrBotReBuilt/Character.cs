@@ -96,6 +96,15 @@ namespace GlurrrBotReBuilt
                 await channel.SendMessageAsync(message);
             }
         }
+
+        public static void Chatter(string message, ISocketMessageChannel channel)
+        {
+            using(var typing = channel.EnterTypingState())
+            {
+                Task.Delay(message.Length * 65);
+                channel.SendMessageAsync(message);
+            }
+        }
     }
 
     class CharacterString

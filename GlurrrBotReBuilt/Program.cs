@@ -13,6 +13,8 @@ namespace GlurrrBotReBuilt
     {
         public const string DATABASE = "GlurrrBot.db";
         public const string CHR_DATABASE = "GlurrrBotChr.db";
+        public static PythonEngine python;
+
         const string VERSION_NUMBER = "0.0.1";
 
         public static DiscordSocketClient client;
@@ -24,6 +26,8 @@ namespace GlurrrBotReBuilt
         public async Task MainAsync()
         {
             Console.WriteLine("Running GlurrrBot Re;Built V" + VERSION_NUMBER);
+
+            python = new PythonEngine();
 
             client = new DiscordSocketClient();
             client.Log += Log;

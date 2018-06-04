@@ -44,15 +44,6 @@ namespace GlurrrBotReBuilt
         {
             string lower = message.Content.ToLower();
 
-            if(lower.Contains("roll"))
-            {
-                if(Regex.Match(lower, @"d\d+").Success)
-                {
-                    string number = Regex.Match(lower, @"\d+").Value;
-                    await Character.WriteChat("I rolled a " + new Random().Next(1, int.Parse(number) + 1) + "!", message.Channel);
-                }
-            }
-            
             if(message.Author.Id == 134852512611172352)
             {
                 Console.WriteLine("Master talked");
@@ -95,13 +86,25 @@ namespace GlurrrBotReBuilt
                 }
             }
 
+            if(lower.Contains("roll"))
+            {
+                Console.WriteLine("Command: Dice Roll");
+                if(Regex.Match(lower, @"d\d+").Success)
+                {
+                    string number = Regex.Match(lower, @"\d+").Value;
+                    await Character.WriteChat("I rolled a " + new Random().Next(1, int.Parse(number) + 1) + "!", message.Channel);
+                }
+            }
+
             if(lower.Contains("thanks") || lower.Contains("thank"))
             {
+                Console.WriteLine("Command: Thanks");
                 await Character.SendMessage("thanks", "Got thanks", message.Channel);
             }
 
             if(lower.Contains("kys"))
             {
+                Console.WriteLine("Command: KYS");
                 await KeepYourselfSafe.RunCommand(message);
             }
 
@@ -117,21 +120,25 @@ namespace GlurrrBotReBuilt
 
             if(lower.Contains("randome"))
             {
+                Console.WriteLine("Command: Randome");
                 await Randome.RunCommand(message);
             }
 
             if(lower.Contains("anime"))
             {
+                Console.WriteLine("Command: Anime");
                 await Character.SendMessage("anime", "", message.Channel);
             }
 
             if(lower.Contains("voice"))
             {
+                Console.WriteLine("Command: Voice");
                 await InsideVoice.RunCommand(message);
             }
 
             if(lower.Contains("play"))
             {
+                Console.WriteLine("Command: Play");
                 if(lower.Contains("your song") || lower.Contains("your reality"))
                 {
                     await Character.SendMessage("yourreality", "Playing my song~", message.Channel);
@@ -155,6 +162,7 @@ namespace GlurrrBotReBuilt
 
             if(lower.Contains("poem"))
             {
+                Console.WriteLine("Command: Poem");
                 if(lower.Contains("read"))
                 {
                     await PoemTime.ReadPoem(message);
@@ -163,14 +171,35 @@ namespace GlurrrBotReBuilt
 
             if(lower.Contains("user info"))
             {
+                Console.WriteLine("Command: User Info");
                 await message.Channel.SendMessageAsync("```Joined at: " + (message.Author as SocketGuildUser).JoinedAt + "\nAccount created at: " + message.Author.CreatedAt + "```");
             }
 
             if(lower.Contains("change game"))
             {
+                Console.WriteLine("Command: Change Game");
                 string[] split = message.Content.Split('"');
+                if(split.Length < 3)
+                {
+                    await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                    return;
+                }
 
                 await Program.client.SetGameAsync(split[1]);
+            }
+
+            if(lower.Contains("run script"))
+            {
+                Console.WriteLine("Command: Run Script");
+
+                string[] split = lower.Split('"');
+                if(split.Length < 3)
+                {
+                    await Character.SendMessage("noquotes", "No quotes entered", message.Channel);
+                    return;
+                }
+
+                Program.python.ExecutePython(@"Scripts/" + split[1], message);
             }
         }
 
@@ -190,7 +219,19 @@ namespace GlurrrBotReBuilt
                 return true;
             }
 
+            if(message.Content.ToLower() == "memejacker")
+            {
+                await message.Channel.SendFileAsync("memejacker.jpg");
+            }
+
             return false;
         }
+    }
+
+    class CommandObject
+    {
+        public int Id{ get; set; }
+        public string Command { get; set; }
+        public string File { get; set; }
     }
 }

@@ -1,0 +1,1 @@
+proxy.SendMessage("Sent from Python", message.Channel)
