@@ -10,7 +10,7 @@ namespace GlurrrBotReBuilt
 {
     class Character
     {
-        static string currentCharacter = "monika";
+        public static string currentCharacter = "monika";
 
         public static async Task SendMessage(string message, string consoleMessage, ISocketMessageChannel channel, string format1 = "", string format2 = "")
         {
@@ -57,9 +57,12 @@ namespace GlurrrBotReBuilt
             }
         }
 
-        public static async Task AddCharacterLine(SocketMessage message, bool overwrite = false)
+        public static async Task AddCharacterLine(SocketMessage message, bool overwrite = true)
         {
             string[] split = message.Content.Split('"');
+
+            if(message.Content.Contains("new"))
+                overwrite = false;
 
             if(split.Length >= 6)
             {
@@ -67,7 +70,7 @@ namespace GlurrrBotReBuilt
                 {
                     var collection = data.GetCollection<CharacterString>(split[1]);
 
-                    if(collection.Exists(x => x.Tag == split[3]) && overwrite == false)
+                    if(collection.Exists(x => x.Tag == split[3]) && overwrite == true)
                     {
                         var chr = collection.FindOne(x => x.Tag == split[3]);
                         chr.Tag = split[3];

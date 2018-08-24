@@ -15,7 +15,7 @@ namespace GlurrrBotReBuilt
         public const string CHR_DATABASE = "GlurrrBotChr.db";
         public static PythonEngine python;
 
-        const string VERSION_NUMBER = "0.0.1";
+        const string VERSION_NUMBER = "0.0.2";
 
         public static DiscordSocketClient client;
 
@@ -54,6 +54,8 @@ namespace GlurrrBotReBuilt
 
             await client.StartAsync();
 
+            SetUp();
+
             string line;
             while(true)
             {
@@ -81,6 +83,11 @@ namespace GlurrrBotReBuilt
                     Task.Run(() => Character.WriteChat(line, client.GetGuild(285703929189367811).DefaultChannel));
                 }
             }
+        }
+
+        public static void SetUp()
+        {
+            CommandHandler.SetUp();
         }
 
         private Task Log(LogMessage msg)

@@ -1,12 +1,10 @@
 ﻿using Discord;
 using Discord.WebSocket;
-using Discord.Audio;
 using GlurrrBotReBuilt.Commands;
 using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.RegularExpressions;
@@ -15,11 +13,28 @@ namespace GlurrrBotReBuilt
 {
     class CommandHandler
     {
+        static List<string> callNames;
+
+        public static void SetUp()
+        {
+            callNames = new List<string>();
+
+            using(var db = new LiteDatabase(Program.CHR_DATABASE))
+            {
+                var c = db.GetCollection<CharacterString>(Character.currentCharacter);
+                var list = c.Find(x => x.Tag == "callname");
+                Console.WriteLine(list.Count());
+                foreach(CharacterString x in list)
+                {
+                    callNames.Add(x.Line);
+                    Console.WriteLine(x.Line);
+                }
+            }
+        }
+
         public static async Task MessageRecieved(SocketMessage message)
         {
-            string lastMessageHolder = message.Channel.GetMessagesAsync(2).Flatten().Result.ElementAt(1).Content.ToLower();
-
-            if(message.Content.ToLower().Contains("monika"))
+            if(callNames.Find(x => message.Content.ToLower().Contains(x)) != null)
             {
                 await ParseMessage(message);
             }
@@ -169,6 +184,7 @@ namespace GlurrrBotReBuilt
                 }
             }
 
+            // TODO: Upgrade this to include avatar URL
             if(lower.Contains("user info"))
             {
                 Console.WriteLine("Command: User Info");
@@ -200,6 +216,13 @@ namespace GlurrrBotReBuilt
                 }
 
                 Program.python.ExecutePython(@"Scripts/" + split[1], message);
+            }
+
+            if(lower.Contains("reload"))
+            {
+                Console.WriteLine("Command: Reload");
+
+                Program.SetUp();
             }
         }
 
